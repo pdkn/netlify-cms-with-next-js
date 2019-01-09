@@ -24,3 +24,4 @@ test/**/out
 
 # Editors
 **/.idea
+.env
