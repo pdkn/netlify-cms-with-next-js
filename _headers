@@ -1,0 +1,2 @@
+/admin/config.yml
+  Basic-Auth: ${ADMIN_USERNAME}:${ADMIN_PASSWORD}
