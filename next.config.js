@@ -24,16 +24,7 @@ module.exports = {
     await writeFile(tmpCmsConfigFile, replaced_contents, 'utf8')
     await rename(tmpCmsConfigFile, cmsConfigFile)
 
-    let headersFile = join(outDir, '_headers')
-    await copyFile(join(dir, '_headers'), headersFile)
-    let headersContent = await readFile(headersFile, 'utf8')
-    let replaced_headersContent = headersContent
-      .replace('${ADMIN_USERNAME}', process.env.ADMIN_USERNAME)
-      .replace('${ADMIN_PASSWORD}', process.env.ADMIN_PASSWORD)
-
-    let tmpHeadersFile = `${headersFile}.jstmpreplace`
-    await writeFile(tmpHeadersFile, replaced_headersContent, 'utf8')
-    await rename(tmpHeadersFile, headersFile)
+    await copyFile(join(dir, '_redirects'), join(outDir, '_redirects'))
 
     return defaultPathMap
   },
