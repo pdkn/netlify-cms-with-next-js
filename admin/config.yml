@@ -5,6 +5,12 @@ backend:
 media_folder: 'static/images/uploads'
 public_folder: '/images/uploads'
 
+media_library:
+  name: cloudinary
+  config:
+    cloud_name: ${CLOUDINARY_CLOUD_NAME}
+    api_key: ${CLOUDINARY_API_KEY}
+
 collections:
   - name: "blog" # Used in routes, e.g., /admin/collections/blog
     label: "Blog" # Used in the UI
