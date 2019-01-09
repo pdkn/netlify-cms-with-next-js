@@ -12,19 +12,30 @@ require('dotenv').config({ debug: process.env.DEBUG })
 module.exports = {
   exportPathMap: async function (defaultPathMap, { dev, dir, outDir, distDir, buildId }) {
 
+    // Export CMS
     await copyFolder(join(dir, 'admin'), join(outDir, 'admin'))
-
     let cmsConfigFile = join(outDir, 'admin/config.yml')
     let contents = await readFile(cmsConfigFile, 'utf8')
     let replaced_contents = contents
       .replace('${CLOUDINARY_CLOUD_NAME}', process.env.CLOUDINARY_CLOUD_NAME)
       .replace('${CLOUDINARY_API_KEY}', process.env.CLOUDINARY_API_KEY)
-
     let tmpCmsConfigFile = `${cmsConfigFile}.jstmpreplace`
     await writeFile(tmpCmsConfigFile, replaced_contents, 'utf8')
     await rename(tmpCmsConfigFile, cmsConfigFile)
 
+    // Export _redirects
     await copyFile(join(dir, '_redirects'), join(outDir, '_redirects'))
+
+    // Export _headers
+    let headersFile = join(outDir, '_headers')
+    await copyFile(join(dir, '_headers'), headersFile)
+    let headersContent = await readFile(headersFile, 'utf8')
+    let replaced_headersContent = headersContent
+      .replace('${ADMIN_USERNAME}', process.env.ADMIN_USERNAME)
+      .replace('${ADMIN_PASSWORD}', process.env.ADMIN_PASSWORD)
+    let tmpHeadersFile = `${headersFile}.jstmpreplace`
+    await writeFile(tmpHeadersFile, replaced_headersContent, 'utf8')
+    await rename(tmpHeadersFile, headersFile)
 
     return defaultPathMap
   },
